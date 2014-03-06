@@ -85,6 +85,9 @@ exports.createuser = function(req, res) {
         birthDate: new Date( req.body.birthDate)
     }
 
+
+
+
     //iterate the different checked inputs to see if the user gave valid data
     for(var tmp in checked) {
         if(!checked[tmp]) {
@@ -98,13 +101,18 @@ exports.createuser = function(req, res) {
     //we get the userid to see if we are creating a new user, or updating an old one
     var userId = req.param('id');
 
+    console.log(userId);
+
     //if not undefined, update old user information
     if (userId !== undefined ) {
 
         //update the gotten userinfo into the database
         userDB.update({_id: userId}, { $set: info }, function (err){
             if (err) return console.error(err);
+            res.redirect('/');
         });
+
+
 
     } else {
 
@@ -128,17 +136,7 @@ exports.createuser = function(req, res) {
 
         })
 
-
-
-        //save a completely new user to the database.
-        /*new userDB(info).save( function(err) {
-                if (err) return console.error(err);
-        });
-        */
-
     }
-
-    //res.redirect('/');
 }
 
 

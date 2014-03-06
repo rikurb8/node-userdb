@@ -59,6 +59,23 @@ module.exports = {
 //with the given birthdate
 var checkSocialNumber = function(socialNumber, birthDate) {
 
+
+    console.log(socialNumber);
+    //birthDate = validator.toDate(birthDate);
+
+    //when changing user data, the date is in a different format
+    //and needs to be changed
+    if (birthDate.search("(EET)") !== -1) {
+        var tmp = birthDate.split(" ");
+
+        var months = {'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04', 'May': '05',
+            'Jun': '06', 'Jul': '07', 'Aug': '08', 'Sep': '09', 'Oct': '10', 'Nov': '11', 'Dec': '12'}
+
+        var datetmp = months[tmp[1]] + '/' + tmp[2] + '/' + tmp[3];
+        birthDate = datetmp;
+
+    }
+
     //length has to be 11 chars to be a legit finnish social security number
     if (socialNumber.length != 11) return false;
 
