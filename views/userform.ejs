@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script>
+      $(function() {
+        $( "#datepicker" ).datepicker({
+            changeMonth: true,
+            changeYear: true,
+            defaultDate: '01/01/90'
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+
+    <% if (failed) { %> <p2>Check the value formats!</p2> <%} %>
+
+
+    <form action="/createuser/<% if (userInfo._id !== undefined) { %><%=userInfo._id%><%} else { ""} %>" method="post" name="userform">
+    <input type="text" placeholder="First name" name="firstName" value=<%= userInfo.firstName %> >
+    <% if (!whatFailed["firstName"]) {%><p2>a-å, A-Å</p2><%}%><br>
+
+    <input type="text" placeholder="Last name" name="lastName" value=<%= userInfo.lastName %>>
+    <% if (!whatFailed["lastName"]) {%><p2>a-å, A-Å</p2><%}%><br>
+
+    <input type="text" placeholder="Email" name="emailAddress" value=<%= userInfo.emailAddress %>>
+    <% if (!whatFailed["emailAddress"]) {%><p2>username@domain.com</p2><%}%><br>
+
+    <input type="text" placeholder="Social sec. number" name="socialNumber" value=<%= userInfo.socialNumber %>>
+    <% if (!whatFailed["socialNumber"]) {%><p2>XXXXXXYZZZK (must be unique)</p2><%}%><br>
+
+    <input type="text" placeholder="Date of birth" name="birthDate" id="datepicker"
+
+    <% //if there is a date chosen already, show it. otherwise show an input element %>
+    <% if ((userInfo._id !== undefined) || (userInfo.birthDate instanceof Date)) { %>
+
+    value="<%=userInfo.birthDate%>">
+
+
+    <% } else { %>
+    value=""><% } %>
+    <% if (!whatFailed["birthDate"]) {%><p2>Choose from the datepicker</p2><%}%><br>
+    <input type="submit" value="Submit">
+    </form>
+
+    <br>
+    <a href="/">Back to the list of users</a>
+  </body>
+</html>

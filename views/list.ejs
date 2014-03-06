@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <div id="content">
+
+        <h1><%= title %></h1>
+
+        <ul>
+            <% //If theres users in the db, print their info %>
+            <% if (users.length == 0 ) { %>
+                <li>No users at this moments</li>
+            <%} else { %>
+
+            <% for(var i=0; i<users.length; i++) { %>
+               <li><%= users[i].firstName %> <%= users[i].lastName %> <a href="showinfo/<%= users[i]._id %>">Tiedot</a>
+               <a href="modifyuser/<%= users[i]._id %>">Muokkaa</a> <a href="deleteuser/<%= users[i]._id %>">Poista</a></li>
+            <% }} %>
+        </ul>
+        <a href="/newuser">Add a new user</a></br>
+    </div>
+  </body>
+</html>

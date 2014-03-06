@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+
+    <ul>
+        <li>Name: <%= userInfo.firstName %> <%= userInfo.lastName %> </li>
+        <li>Email: <%= userInfo.emailAddress %></li>
+        <li>Social Security Number: <%= userInfo.socialNumber %></li>
+        <li>Date of birth: <%=userInfo.birthDate.getDate()%>/<%=userInfo.birthDate.getMonth()+1%>/<%=userInfo.birthDate.getFullYear()%></li>
+   </ul>
+
+    <a href="/modifyuser/<%= userInfo._id %>">Modify info</a></br>
+    <a href="/newuser">Add a new user</a></br>
+    <a href="/">Back to the userlist</a>
+  </body>
+</html>
