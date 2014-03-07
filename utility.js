@@ -50,7 +50,6 @@ module.exports = {
             formOk.birthDate = false;
         }
 
-
         return formOk;
     }
 
@@ -61,7 +60,7 @@ module.exports = {
 var checkSocialNumber = function(socialNumber, birthDate) {
 
     //when changing user data, the date is in a different format
-    //and needs to be changed
+    //and needs to be changed to the common format (MM/DD/YYYY)
     if (birthDate.search("GMT") !== -1) {
         var tmp = birthDate.split(" ");
 
@@ -100,8 +99,7 @@ var checkSocialNumber = function(socialNumber, birthDate) {
     //it is the determined by "first 6 chars + 3 digits from the later part (after +,- or A) % 31"
     //socialsecnumber: 160390-151G
     //eg. 160390151 % 31
-    //the modulo is mapped to the hashtable underneath
-
+    //the modulo is mapped to the hashtable shown underneath
     var modulos = { 0:"0", 1:"1", 2:"2", 3:"3", 4:"4", 5:"5", 6:"6", 7:"7",
                     8:"8", 9:"9", 10:"A", 11:"B", 12:"C", 13:"D", 14:"E", 15:"F",
                     16:"H", 17:"J", 18:"K", 19:"L", 20:"M", 21:"N", 22:"P",
@@ -111,8 +109,8 @@ var checkSocialNumber = function(socialNumber, birthDate) {
 
     //calculate the checksum and compare it to the last char of the given socialnumber
     var lastDigit = socialNumber[10];
-
     var countedModulo = parseInt(socialNumber.substring(0, 6) + socialNumber.substring(7,10)) % 31;
+
     if (lastDigit !== modulos[countedModulo]) return false;
 
     //if we get here, socialnumber was ok

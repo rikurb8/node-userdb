@@ -101,12 +101,9 @@ exports.createuser = function(req, res) {
             info.birthDate  = req.body.birthDate;
 
             //display the userform again. whatFailed has information which text field has the invalid data.
-            res.render('userform', { title: 'UserDB',userInfo: info, failed: true, whatFailed: checked });
-            return;
+            return res.render('userform', { title: 'UserDB',userInfo: info, failed: true, whatFailed: checked });
         }
     }
-
-
 
     //if not undefined, update old user information
     if (userId != undefined ) {
@@ -114,22 +111,20 @@ exports.createuser = function(req, res) {
         //update the gotten userinfo into the database
         userDB.update({_id: userId}, { $set: info }, function (err){
             if (err) return console.error(err);
-            res.redirect('/');
+            return res.redirect('/');
         });
 
-
-
     } else {
-
 
         //check if theres a user with the same socialnumber since it must be unique
         userDB.find({"socialNumber": info.socialNumber}, function(err, result) {
 
+            //if the find function found something, that means there is a user with the same
+            //socialnumber already. render the userform and ask for new info.
             if (typeof result[0] !== 'undefined'){
                 checked.socialNumber = false;
                 return res.render('userform', { title: 'UserDB', userInfo: info, failed: true, whatFailed: checked });
             }
-
 
             //save a completely new user to the database if no uniques found.
             new userDB(info).save( function(err) {
@@ -137,8 +132,6 @@ exports.createuser = function(req, res) {
             });
 
             res.redirect('/');
-
-
         })
 
     }
@@ -173,8 +166,7 @@ exports.showinfo = function(req, res) {
 
         if (err) return console.error(err);
 
-        res.render('userinfo', { title:'UserDB', userInfo: user });
-
+        return res.render('userinfo', { title:'UserDB', userInfo: user });
     })
 
 }
