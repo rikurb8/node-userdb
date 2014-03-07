@@ -33,7 +33,7 @@
     <% if (!whatFailed["emailAddress"]) {%><p2>username@domain.com</p2><%}%><br>
 
     <input type="text" placeholder="Social sec. number" name="socialNumber" value=<%= userInfo.socialNumber %>>
-    <% if (!whatFailed["socialNumber"]) {%><p2>XXXXXXYZZZK (must be unique)</p2><%}%><br>
+    <% if (!whatFailed["socialNumber"]) {%><p2>XXXXXXYZZZK (must be unique and match the date of birth)</p2><%}%><br>
 
     <input type="text" placeholder="Date of birth" name="birthDate" id="datepicker"
 

@@ -16,8 +16,8 @@
             <%} else { %>
 
             <% for(var i=0; i<users.length; i++) { %>
-               <li><%= users[i].firstName %> <%= users[i].lastName %> <a href="showinfo/<%= users[i]._id %>">Tiedot</a>
-               <a href="modifyuser/<%= users[i]._id %>">Muokkaa</a> <a href="deleteuser/<%= users[i]._id %>">Poista</a></li>
+               <li><%= users[i].firstName %> <%= users[i].lastName %> <a href="showinfo/<%= users[i]._id %>">Full information</a>
+               <a href="modifyuser/<%= users[i]._id %>">Edit</a> <a href="deleteuser/<%= users[i]._id %>">Delete user</a></li>
             <% }} %>
         </ul>
         <a href="/newuser">Add a new user</a></br>

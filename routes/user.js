@@ -58,7 +58,7 @@ exports.modifyuser = function(req, res) {
 
         if (err) return console.error(err);
 
-        res.render('userform', { title:'UserDB', userInfo: user, failed: false, whatFailed: validInformation });
+        return res.render('userform', { title:'UserDB', userInfo: user, failed: false, whatFailed: validInformation });
 
     })
 }
@@ -85,12 +85,20 @@ exports.createuser = function(req, res) {
         birthDate: new Date( req.body.birthDate)
     }
 
-
-
+    //we get the userid to see if we are creating a new user, or updating an old one
+    var userId = req.param('id');
 
     //iterate the different checked inputs to see if the user gave valid data
     for(var tmp in checked) {
         if(!checked[tmp]) {
+
+            //if there was a userid (editing existing userinfo), we need to add it to the rendered information
+            if (userId != undefined) {
+                info._id = userId;
+            }
+
+            //we want the string date, not the Date object
+            info.birthDate  = req.body.birthDate;
 
             //display the userform again. whatFailed has information which text field has the invalid data.
             res.render('userform', { title: 'UserDB',userInfo: info, failed: true, whatFailed: checked });
@@ -98,13 +106,10 @@ exports.createuser = function(req, res) {
         }
     }
 
-    //we get the userid to see if we are creating a new user, or updating an old one
-    var userId = req.param('id');
 
-    console.log(userId);
 
     //if not undefined, update old user information
-    if (userId !== undefined ) {
+    if (userId != undefined ) {
 
         //update the gotten userinfo into the database
         userDB.update({_id: userId}, { $set: info }, function (err){

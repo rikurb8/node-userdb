@@ -50,6 +50,7 @@ module.exports = {
             formOk.birthDate = false;
         }
 
+
         return formOk;
     }
 
@@ -59,13 +60,9 @@ module.exports = {
 //with the given birthdate
 var checkSocialNumber = function(socialNumber, birthDate) {
 
-
-    console.log(socialNumber);
-    //birthDate = validator.toDate(birthDate);
-
     //when changing user data, the date is in a different format
     //and needs to be changed
-    if (birthDate.search("(EET)") !== -1) {
+    if (birthDate.search("GMT") !== -1) {
         var tmp = birthDate.split(" ");
 
         var months = {'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04', 'May': '05',
@@ -79,10 +76,13 @@ var checkSocialNumber = function(socialNumber, birthDate) {
     //length has to be 11 chars to be a legit finnish social security number
     if (socialNumber.length != 11) return false;
 
+
+
     //check if the 6 first digits match the users birthdate
     var date = birthDate.substring(3, 5);
     date += birthDate.substring(0,2);
     date += birthDate.substring(8, 10);
+
     if (date !== socialNumber.substring(0,6)) return false;
 
     //7th char in the socialNumber is a checksum for the centry
@@ -94,9 +94,12 @@ var checkSocialNumber = function(socialNumber, birthDate) {
     var check = socialNumber.substring(6, 7);
     if(checks[centry] !== check) return false;
 
+
+
     //the last char of the socialNumber is also a checksum
-    //it is the determined by "first 6 chars % 31"
-    //eg. 160390 % 31
+    //it is the determined by "first 6 chars + 3 digits from the later part (after +,- or A) % 31"
+    //socialsecnumber: 160390-151G
+    //eg. 160390151 % 31
     //the modulo is mapped to the hashtable underneath
 
     var modulos = { 0:"0", 1:"1", 2:"2", 3:"3", 4:"4", 5:"5", 6:"6", 7:"7",
@@ -104,9 +107,12 @@ var checkSocialNumber = function(socialNumber, birthDate) {
                     16:"H", 17:"J", 18:"K", 19:"L", 20:"M", 21:"N", 22:"P",
                     23:"R", 24:"S", 25:"T", 26:"U", 27:"V", 28:"W", 29:"X", 30:"Y" }
 
+
+
     //calculate the checksum and compare it to the last char of the given socialnumber
     var lastDigit = socialNumber[10];
-    var countedModulo = parseInt(socialNumber.substring(0, 6)) % 31;
+
+    var countedModulo = parseInt(socialNumber.substring(0, 6) + socialNumber.substring(7,10)) % 31;
     if (lastDigit !== modulos[countedModulo]) return false;
 
     //if we get here, socialnumber was ok
